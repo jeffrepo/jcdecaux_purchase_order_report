@@ -6,7 +6,10 @@
     "author": "JCDecaux",
     "license": "LGPL-3",
     "depends": ["purchase"],
-    "data": [],
+    "data": [
+        "views/res_config_settings_views.xml",
+        "views/purchase_order_views.xml",
+    ],
     "installable": True,
     "application": False,
 }
