@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchase_order_jcdecaux">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t
+                    t-call="jcdecaux_purchase_order_report.report_purchase_order_jcdecaux_document"
+                    t-lang="o.partner_id.lang or user.lang"
+                />
+            </t>
+        </t>
+    </template>
+
+    <template id="report_purchase_order_jcdecaux_document">
+        <div
+            class="page jcdecaux-purchase-order"
+            t-att-data-oe-model="o and o._name"
+            t-att-data-oe-id="o and o.id"
+            t-att-data-oe-lang="o.env.context.get('lang')"
+        >
+            <style>
+                .jcdecaux-purchase-order {
+                    color: #000;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 9px;
+                    line-height: 1.2;
+                }
+                .jcdecaux-purchase-order * {
+                    box-sizing: border-box;
+                }
+                .jcdecaux-purchase-order table {
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+                .jcdecaux-purchase-order td,
+                .jcdecaux-purchase-order th {
+                    vertical-align: top;
+                }
+                .jcdecaux-purchase-order .bordered {
+                    border: 1px solid #000;
+                }
+                .jcdecaux-purchase-order .section-title {
+                    background: #bfbfbf;
+                    border-bottom: 1px solid #000;
+                    font-size: 13px;
+                    font-weight: 700;
+                    padding: 2px 4px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .header-table td {
+                    height: 49px;
+                }
+                .jcdecaux-purchase-order .logo-box {
+                    padding: 4px 10px;
+                    text-align: center;
+                    width: 40%;
+                }
+                .jcdecaux-purchase-order .logo-box img {
+                    max-height: 38px;
+                    max-width: 95%;
+                }
+                .jcdecaux-purchase-order .title-box {
+                    font-size: 19px;
+                    font-weight: 700;
+                    padding: 12px 5px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .order-number {
+                    margin-left: auto;
+                    margin-top: 5px;
+                    width: 64%;
+                }
+                .jcdecaux-purchase-order .order-number td {
+                    border: 1px solid #000;
+                    font-size: 11px;
+                    padding: 2px 6px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .party-row {
+                    margin-top: 8px;
+                }
+                .jcdecaux-purchase-order .party-box {
+                    height: 118px;
+                }
+                .jcdecaux-purchase-order .party-content {
+                    padding: 3px 5px;
+                }
+                .jcdecaux-purchase-order .party-line {
+                    margin-bottom: 2px;
+                }
+                .jcdecaux-purchase-order .label {
+                    font-weight: 700;
+                }
+                .jcdecaux-purchase-order .metadata {
+                    margin-top: 8px;
+                }
+                .jcdecaux-purchase-order .metadata th {
+                    background: #bfbfbf;
+                    border: 1px solid #000;
+                    font-weight: 700;
+                    padding: 2px 4px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .metadata td {
+                    border: 1px solid #000;
+                    font-size: 10px;
+                    padding: 2px 4px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .lines {
+                    margin-top: 8px;
+                }
+                .jcdecaux-purchase-order .lines thead {
+                    display: table-header-group;
+                }
+                .jcdecaux-purchase-order .lines tr {
+                    page-break-inside: avoid;
+                }
+                .jcdecaux-purchase-order .lines th {
+                    background: #bfbfbf;
+                    border: 1px solid #000;
+                    font-weight: 700;
+                    padding: 4px 2px;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+                .jcdecaux-purchase-order .lines td {
+                    border: 1px solid #777;
+                    padding: 4px 3px;
+                    vertical-align: middle;
+                }
+                .jcdecaux-purchase-order .lines .numeric {
+                    text-align: right;
+                    white-space: nowrap;
+                }
+                .jcdecaux-purchase-order .lines .center {
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .line-section td {
+                    background: #efefef;
+                    font-weight: 700;
+                }
+                .jcdecaux-purchase-order .delivery,
+                .jcdecaux-purchase-order .observations {
+                    border: 1px solid #000;
+                    border-top: 0;
+                    min-height: 25px;
+                    padding: 3px 4px;
+                    white-space: pre-line;
+                }
+                .jcdecaux-purchase-order .observations {
+                    min-height: 42px;
+                }
+                .jcdecaux-purchase-order .terms-block {
+                    page-break-inside: avoid;
+                }
+                .jcdecaux-purchase-order .terms-title {
+                    background: #7fe08b;
+                    border: 1px solid #000;
+                    font-weight: 700;
+                    padding: 2px 4px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .terms-content {
+                    border: 1px solid #000;
+                    border-top: 0;
+                    font-size: 7px;
+                    line-height: 1.18;
+                    padding: 5px 4px;
+                    white-space: pre-line;
+                }
+                .jcdecaux-purchase-order .totals-area {
+                    border: 1px solid #000;
+                    border-top: 0;
+                    min-height: 76px;
+                    padding: 8px 0;
+                }
+                .jcdecaux-purchase-order .totals {
+                    margin-left: auto;
+                    margin-right: 0;
+                    width: 34%;
+                }
+                .jcdecaux-purchase-order .totals th {
+                    font-weight: 700;
+                    padding: 3px 8px 3px 0;
+                    text-align: right;
+                    width: 45%;
+                }
+                .jcdecaux-purchase-order .totals td {
+                    border: 1px solid #000;
+                    font-weight: 700;
+                    padding: 2px 5px;
+                    text-align: right;
+                    white-space: nowrap;
+                }
+                .jcdecaux-purchase-order .notice {
+                    border: 1px solid #000;
+                    border-top: 0;
+                    color: red;
+                    font-size: 6px;
+                    font-weight: 700;
+                    padding: 5px 3px;
+                    text-align: center;
+                }
+                .jcdecaux-purchase-order .requested-by {
+                    border: 1px solid #000;
+                    border-top: 0;
+                    min-height: 50px;
+                    padding: 12px 3px;
+                }
+                .jcdecaux-purchase-order .nowrap {
+                    white-space: nowrap;
+                }
+            </style>
+
+            <table class="header-table">
+                <tr>
+                    <td class="bordered logo-box">
+                        <img
+                            t-if="o.company_id.logo"
+                            t-att-src="image_data_uri(o.company_id.logo)"
+                            alt="JCDecaux"
+                        />
+                    </td>
+                    <td style="width: 2.5%;"/>
+                    <td class="bordered title-box">ORDEN DE COMPRA</td>
+                </tr>
+            </table>
+
+            <table class="order-number">
+                <tr>
+                    <td style="width: 32%;">Orden No.</td>
+                    <td><span t-field="o.name"/></td>
+                </tr>
+            </table>
+
+            <table class="party-row">
+                <tr>
+                    <td class="bordered party-box" style="width: 40%;">
+                        <div class="section-title">DATOS DEL PROVEEDOR</div>
+                        <div class="party-content">
+                            <div class="party-line">
+                                <span class="label">NOMBRE: </span>
+                                <span t-field="o.partner_id.name"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">CÓDIGO: </span>
+                                <span t-esc="o._jcdecaux_supplier_code()"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">IDENTIFICACIÓN: </span>
+                                <span t-field="o.partner_id.vat"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">DIRECCIÓN: </span>
+                                <span t-field="o.partner_id.street"/>
+                                <t t-if="o.partner_id.street2">, <span t-field="o.partner_id.street2"/></t>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">TELÉFONO: </span>
+                                <span t-field="o.partner_id.phone"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">EMAIL: </span>
+                                <span t-field="o.partner_id.email"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">CIUDAD/PAÍS: </span>
+                                <span t-field="o.partner_id.city"/>
+                                <t t-if="o.partner_id.country_id">, <span t-field="o.partner_id.country_id.name"/></t>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 2.5%;"/>
+                    <td class="bordered party-box">
+                        <div class="section-title">
+                            <span t-field="o.company_id.name"/>
+                        </div>
+                        <div class="party-content">
+                            <div class="party-line">
+                                <span class="label">IDENTIFICACIÓN TRIBUTARIA: </span>
+                                <span t-field="o.company_id.vat"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">DIRECCIÓN: </span>
+                                <span t-field="o.company_id.street"/>
+                                <t t-if="o.company_id.street2">, <span t-field="o.company_id.street2"/></t>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">CIUDAD/PAÍS: </span>
+                                <span t-field="o.company_id.city"/>
+                                <t t-if="o.company_id.country_id">, <span t-field="o.company_id.country_id.name"/></t>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">TELÉFONO: </span>
+                                <span t-field="o.company_id.phone"/>
+                            </div>
+                            <div class="party-line">
+                                <span class="label">EMAIL: </span>
+                                <span t-field="o.company_id.email"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="metadata">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">FECHA DE EMISIÓN</th>
+                        <th>CONDICIONES DE PAGO</th>
+                        <th style="width: 18%;">MONEDA</th>
+                        <th style="width: 15%;">T.C.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span t-field="o.date_order" t-options="{'widget': 'date'}"/></td>
+                        <td><span t-field="o.payment_term_id.name"/></td>
+                        <td><span t-field="o.currency_id.name"/></td>
+                        <td><span t-esc="'%.4f' % o._jcdecaux_exchange_rate()"/></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="lines">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">CAN</th>
+                        <th style="width: 6%;">U.M.</th>
+                        <th style="width: 9%;">CÓDIGO</th>
+                        <th style="width: 10%;">FECHA DE<br/>ENTREGA</th>
+                        <th>DESCRIPCIÓN</th>
+                        <th style="width: 12%;">VALOR UNITARIO</th>
+                        <th style="width: 11%;">VALOR IVA</th>
+                        <th style="width: 12%;">VALOR TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.order_line" t-as="line">
+                        <tr t-if="line.display_type == 'line_section'" class="line-section">
+                            <td colspan="8"><span t-field="line.name"/></td>
+                        </tr>
+                        <tr t-elif="not line.display_type">
+                            <td class="numeric"><span t-field="line.product_qty"/></td>
+                            <td class="center"><span t-field="line.product_uom.name"/></td>
+                            <td><span t-field="line.product_id.default_code"/></td>
+                            <td class="center nowrap">
+                                <span t-field="line.date_planned" t-options="{'widget': 'date'}"/>
+                            </td>
+                            <td><span t-field="line.name"/></td>
+                            <td class="numeric">
+                                <span
+                                    t-field="line.price_unit"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                            <td class="numeric">
+                                <span
+                                    t-field="line.price_tax"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                            <td class="numeric">
+                                <span
+                                    t-field="line.price_subtotal"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-set="delivery_partner" t-value="o._jcdecaux_delivery_partner()"/>
+            <div class="delivery">
+                <span class="label">Lugar de Entrega: </span>
+                <span t-esc="delivery_partner.contact_address"/>
+            </div>
+            <div class="observations">
+                <span class="label">OBSERVACIONES:</span>
+                <t t-foreach="o._jcdecaux_observation_lines()" t-as="note">
+                    <div t-field="note.name"/>
+                </t>
+            </div>
+
+            <div class="terms-block">
+                <div class="terms-title">CONDICIONES</div>
+                <div class="terms-content" t-esc="o._jcdecaux_general_terms()"/>
+
+                <div class="totals-area">
+                    <table class="totals">
+                        <tr>
+                            <th>SUBTOTAL</th>
+                            <td>
+                                <span
+                                    t-field="o.amount_untaxed"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>DESC.</th>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <th>IVA</th>
+                            <td>
+                                <span
+                                    t-field="o.amount_tax"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL</th>
+                            <td>
+                                <span
+                                    t-field="o.amount_total"
+                                    t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"
+                                />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="notice">
+                    TENDRÁ OCHO (8) DÍAS CALENDARIO PARA CONFIRMAR QUE LOS DETALLES ASENTADOS EN
+                    ESTA ORDEN DE COMPRA SON CORRECTOS, DE LO CONTRARIO SE DARÁN POR ACEPTADOS DE
+                    CONFORMIDAD.
+                </div>
+                <div class="requested-by">
+                    <span class="label">Solicitado por: </span>
+                    <span t-field="o.user_id.name"/>
+                    <span> — </span>
+                    <span t-field="o.date_order" t-options="{'widget': 'date'}"/>
+                    <!-- Approval rows will be added when the approval module mapping is provided. -->
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
