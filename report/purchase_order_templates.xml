@@ -12,8 +12,13 @@
     </template>
 
     <template id="report_purchase_order_jcdecaux_document">
+        <!--
+            Odoo extracts elements with the `article` class and wraps them in
+            web.minimal_layout before invoking wkhtmltopdf. That wrapper keeps
+            the UTF-8 metadata required by accented and monetary characters.
+        -->
         <div
-            class="page jcdecaux-purchase-order"
+            class="article page jcdecaux-purchase-order"
             t-att-data-oe-model="o and o._name"
             t-att-data-oe-id="o and o.id"
             t-att-data-oe-lang="o.env.context.get('lang')"
