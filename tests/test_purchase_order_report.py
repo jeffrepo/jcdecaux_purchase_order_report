@@ -88,6 +88,37 @@ class TestPurchaseOrderReport(TransactionCase):
             "Condiciones configuradas para la prueba.",
         )
 
+    def test_multiline_general_terms_settings_are_loaded_and_saved(self):
+        parameters = self.env["ir.config_parameter"].sudo()
+        parameters.set_param(
+            "jcdecaux_purchase_order_report.general_terms",
+            "Primera línea.\nSegunda línea.",
+        )
+
+        defaults = self.env["res.config.settings"].default_get(
+            ["jcdecaux_purchase_general_terms"]
+        )
+
+        self.assertEqual(
+            defaults["jcdecaux_purchase_general_terms"],
+            "Primera línea.\nSegunda línea.",
+        )
+
+        settings = self.env["res.config.settings"].create(
+            {
+                "jcdecaux_purchase_general_terms": (
+                    "Condiciones actualizadas.\nCon texto multilínea."
+                )
+            }
+        )
+        settings.set_values()
+        self.assertEqual(
+            parameters.get_param(
+                "jcdecaux_purchase_order_report.general_terms"
+            ),
+            "Condiciones actualizadas.\nCon texto multilínea.",
+        )
+
     def test_delivery_address_prefers_purchase_destination(self):
         if "dest_address_id" not in self.order._fields:
             self.assertEqual(
