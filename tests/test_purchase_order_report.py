@@ -139,6 +139,65 @@ class TestPurchaseOrderReport(TransactionCase):
             self.order._jcdecaux_delivery_partner(), delivery_partner
         )
 
+    def test_approval_lines_only_include_current_approved_round(self):
+        self.order._write_purchase_approval_fields(
+            {"purchase_approval_round": 2}
+        )
+        approval_values = {
+            "order_id": self.order.id,
+            "company_id": self.env.company.id,
+            "approver_id": self.env.user.id,
+            "acted_at": fields.Datetime.now(),
+            "order_currency_id": self.order.currency_id.id,
+            "order_amount": self.order.amount_total,
+            "company_currency_id": self.env.company.currency_id.id,
+            "company_amount": self.order.amount_total,
+        }
+        approvals = self.env["purchase.order.approval"].sudo().create(
+            [
+                {
+                    **approval_values,
+                    "round_number": 1,
+                    "sequence": 1,
+                    "role": "requester",
+                    "state": "approved",
+                },
+                {
+                    **approval_values,
+                    "round_number": 2,
+                    "sequence": 2,
+                    "role": "financial_director",
+                    "state": "approved",
+                },
+                {
+                    **approval_values,
+                    "round_number": 2,
+                    "sequence": 1,
+                    "role": "requester",
+                    "state": "approved",
+                },
+                {
+                    **approval_values,
+                    "round_number": 2,
+                    "sequence": 3,
+                    "role": "general_director",
+                    "state": "pending",
+                    "approver_id": False,
+                    "acted_at": False,
+                },
+            ]
+        )
+
+        report_approvals = self.order._jcdecaux_approval_lines()
+
+        self.assertEqual(report_approvals.mapped("sequence"), [1, 2])
+        self.assertEqual(
+            report_approvals,
+            approvals.filtered(
+                lambda line: line.round_number == 2 and line.state == "approved"
+            ).sorted("sequence"),
+        )
+
     def test_report_action_is_bound_to_purchase_orders(self):
         report = self.env.ref(
             "jcdecaux_purchase_order_report.action_report_purchase_order_jcdecaux"

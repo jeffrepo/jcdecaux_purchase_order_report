@@ -211,7 +211,16 @@
                     border: 1px solid #000;
                     border-top: 0;
                     min-height: 50px;
-                    padding: 12px 3px;
+                    padding: 9px 3px;
+                }
+                .jcdecaux-purchase-order .requester-row {
+                    margin-bottom: 7px;
+                }
+                .jcdecaux-purchase-order .approval-row {
+                    margin-top: 5px;
+                }
+                .jcdecaux-purchase-order .approval-role {
+                    font-style: italic;
                 }
                 .jcdecaux-purchase-order .nowrap {
                     white-space: nowrap;
@@ -435,11 +444,37 @@
                     CONFORMIDAD.
                 </div>
                 <div class="requested-by">
-                    <span class="label">Solicitado por: </span>
-                    <span t-field="o.user_id.name"/>
-                    <span> — </span>
-                    <span t-field="o.date_order" t-options="{'widget': 'date'}"/>
-                    <!-- Approval rows will be added when the approval module mapping is provided. -->
+                    <div class="requester-row">
+                        <span class="label">Solicitado por: </span>
+                        <span t-field="o.user_id.name"/>
+                        <span> — </span>
+                        <span
+                            t-if="o.purchase_approval_started_at"
+                            t-field="o.purchase_approval_started_at"
+                            t-options="{'widget': 'datetime', 'format': 'yyyy-MM-dd HH:mm'}"
+                        />
+                        <span
+                            t-else=""
+                            t-field="o.date_order"
+                            t-options="{'widget': 'date', 'format': 'yyyy-MM-dd'}"
+                        />
+                    </div>
+
+                    <t t-set="approval_lines" t-value="o._jcdecaux_approval_lines()"/>
+                    <div
+                        t-foreach="approval_lines"
+                        t-as="approval"
+                        class="approval-row"
+                    >
+                        <span class="label">APROBADO POR: </span>
+                        <span class="approval-role">(<span t-field="approval.role"/>) </span>
+                        <span t-field="approval.approver_id.name"/>
+                        <span> — </span>
+                        <span
+                            t-field="approval.acted_at"
+                            t-options="{'widget': 'datetime', 'format': 'yyyy-MM-dd HH:mm'}"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
