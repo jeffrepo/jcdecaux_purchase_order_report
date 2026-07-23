@@ -32,6 +32,16 @@ class PurchaseOrder(models.Model):
         self.ensure_one()
         return self.order_line.filtered(lambda line: line.display_type == "line_note")
 
+    def _jcdecaux_approval_lines(self):
+        """Return approved signatures from the active approval round."""
+        self.ensure_one()
+        return self.purchase_approval_line_ids.filtered(
+            lambda line: (
+                line.round_number == self.purchase_approval_round
+                and line.state == "approved"
+            )
+        ).sorted("sequence")
+
     def _jcdecaux_general_terms(self):
         self.ensure_one()
         return (

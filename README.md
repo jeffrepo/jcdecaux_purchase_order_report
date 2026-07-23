@@ -37,8 +37,9 @@ Line notes are printed in the observations section. The supplier code currently
 uses `res.partner.ref`; this can be changed to the SAP field after its technical
 name is confirmed.
 
-## Pending approval integration
+## Approval integration
 
-Approval history integration is intentionally deferred until the source module,
-approval model, sequence, and technical fields are confirmed. The current report
-prints the requester and order date but does not fabricate approval rows.
+The add-on depends on `jcdecaux_purchase_approval`. The final report block prints
+only approved records from the current approval round, ordered by sequence. Each
+signature includes the approval role, the user who acted, and its date and time.
+Rejected, cancelled, pending, and previous-round records are not printed.
