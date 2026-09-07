@@ -7,8 +7,9 @@ Odoo 17 add-on that provides the custom JCDecaux purchase order PDF layout.
 Add this repository to the Odoo add-ons path, update the Apps list, and install
 `JCDecaux - Purchase Order Report` (`jcdecaux_purchase_order_report`).
 
-The new **Orden de compra JCDecaux** option is available from the **Imprimir**
-menu of a purchase order. The standard Odoo purchase report is not replaced.
+The **Orden de compra JCDecaux** option is the only purchase-order report shown
+in the **Imprimir** menu. The native Odoo purchase-order report remains available
+internally but is hidden from that menu.
 When a confirmed purchase order is sent by email through Odoo's standard
 **Send PO** action, the JCDecaux report replaces the native PDF attachment.
 
