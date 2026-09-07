@@ -211,10 +211,15 @@ class TestPurchaseOrderReport(TransactionCase):
         )
         self.assertEqual(report.paperformat_id.format, "Letter")
 
-    def test_native_purchase_order_report_is_hidden_from_print_menu(self):
-        native_report = self.env.ref("purchase.action_report_purchase_order")
+    def test_native_purchase_reports_are_hidden_from_print_menu(self):
+        native_report_xmlids = (
+            "purchase.action_report_purchase_order",
+            "purchase.report_purchase_quotation",
+        )
 
-        self.assertFalse(native_report.binding_model_id)
+        for xmlid in native_report_xmlids:
+            with self.subTest(xmlid=xmlid):
+                self.assertFalse(self.env.ref(xmlid).binding_model_id)
 
     def test_purchase_order_email_uses_jcdecaux_report(self):
         mail_template = self.env.ref(
