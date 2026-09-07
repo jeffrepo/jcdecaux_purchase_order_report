@@ -211,6 +211,11 @@ class TestPurchaseOrderReport(TransactionCase):
         )
         self.assertEqual(report.paperformat_id.format, "Letter")
 
+    def test_native_purchase_order_report_is_hidden_from_print_menu(self):
+        native_report = self.env.ref("purchase.action_report_purchase_order")
+
+        self.assertFalse(native_report.binding_model_id)
+
     def test_purchase_order_email_uses_jcdecaux_report(self):
         mail_template = self.env.ref(
             "purchase.email_template_edi_purchase_done"
