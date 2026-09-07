@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        The standard Send PO action uses this template. Replace only its PDF
+        report while preserving Odoo's standard subject, recipients and body.
+        A function is used because the original purchase template is noupdate.
+    -->
+    <function
+        model="mail.template"
+        name="write"
+        eval="[
+            [ref('purchase.email_template_edi_purchase_done')],
+            {
+                'report_template_ids': [
+                    Command.set([
+                        ref(
+                            'jcdecaux_purchase_order_report.'
+                            'action_report_purchase_order_jcdecaux'
+                        )
+                    ])
+                ]
+            }
+        ]"
+    />
+</odoo>
