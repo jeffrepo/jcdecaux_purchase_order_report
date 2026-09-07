@@ -7,9 +7,9 @@ Odoo 17 add-on that provides the custom JCDecaux purchase order PDF layout.
 Add this repository to the Odoo add-ons path, update the Apps list, and install
 `JCDecaux - Purchase Order Report` (`jcdecaux_purchase_order_report`).
 
-The **Orden de compra JCDecaux** option is the only purchase-order report shown
-in the **Imprimir** menu. The native Odoo purchase-order report remains available
-internally but is hidden from that menu.
+The **Orden de compra JCDecaux** option is the only report shown in the
+**Imprimir** menu. Odoo's native purchase-order and request-for-quotation reports
+remain available internally but are hidden from that menu.
 When a confirmed purchase order is sent by email through Odoo's standard
 **Send PO** action, the JCDecaux report replaces the native PDF attachment.
 
@@ -44,5 +44,5 @@ name is confirmed.
 
 The add-on depends on `jcdecaux_purchase_approval`. The final report block prints
 only approved records from the current approval round, ordered by sequence. Each
-signature includes the approval role, the user who acted, and its date and time.
+signature includes the user who acted and its date and time.
 Rejected, cancelled, pending, and previous-round records are not printed.
