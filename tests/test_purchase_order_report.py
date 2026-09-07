@@ -210,3 +210,13 @@ class TestPurchaseOrderReport(TransactionCase):
             "jcdecaux_purchase_order_report.report_purchase_order_jcdecaux",
         )
         self.assertEqual(report.paperformat_id.format, "Letter")
+
+    def test_purchase_order_email_uses_jcdecaux_report(self):
+        mail_template = self.env.ref(
+            "purchase.email_template_edi_purchase_done"
+        )
+        report = self.env.ref(
+            "jcdecaux_purchase_order_report.action_report_purchase_order_jcdecaux"
+        )
+
+        self.assertEqual(mail_template.report_template_ids, report)

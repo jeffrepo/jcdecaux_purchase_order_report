@@ -9,6 +9,8 @@ Add this repository to the Odoo add-ons path, update the Apps list, and install
 
 The new **Orden de compra JCDecaux** option is available from the **Imprimir**
 menu of a purchase order. The standard Odoo purchase report is not replaced.
+When a confirmed purchase order is sent by email through Odoo's standard
+**Send PO** action, the JCDecaux report replaces the native PDF attachment.
 
 ## Configuration
 

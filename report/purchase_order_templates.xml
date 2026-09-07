@@ -73,7 +73,7 @@
                 .jcdecaux-purchase-order .order-number {
                     margin-left: auto;
                     margin-top: 5px;
-                    width: 64%;
+                    width: 40%;
                 }
                 .jcdecaux-purchase-order .order-number td {
                     border: 1px solid #000;
@@ -218,9 +218,6 @@
                 }
                 .jcdecaux-purchase-order .approval-row {
                     margin-top: 5px;
-                }
-                .jcdecaux-purchase-order .approval-role {
-                    font-style: italic;
                 }
                 .jcdecaux-purchase-order .nowrap {
                     white-space: nowrap;
@@ -467,7 +464,6 @@
                         class="approval-row"
                     >
                         <span class="label">APROBADO POR: </span>
-                        <span class="approval-role">(<span t-field="approval.role"/>) </span>
                         <span t-field="approval.approver_id.name"/>
                         <span> — </span>
                         <span
