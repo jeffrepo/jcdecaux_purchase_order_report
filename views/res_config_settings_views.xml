@@ -18,6 +18,26 @@
                         placeholder="Condiciones generales de compra..."
                     />
                 </setting>
+                <setting
+                    id="jcdecaux_purchase_appendix_pdf_setting"
+                    string="PDF adicional para la orden de compra JCDecaux"
+                    help="Sus páginas se agregarán al final del reporte como un solo documento."
+                    groups="base.group_system"
+                    company_dependent="1"
+                >
+                    <field
+                        name="jcdecaux_purchase_appendix_filename"
+                        invisible="1"
+                    />
+                    <field
+                        name="jcdecaux_purchase_appendix_pdf"
+                        filename="jcdecaux_purchase_appendix_filename"
+                        options="{'accepted_file_extensions': 'application/pdf,.pdf'}"
+                    />
+                    <div class="text-muted">
+                        Si no se carga un archivo, se imprimirá únicamente la orden de compra.
+                    </div>
+                </setting>
             </xpath>
         </field>
     </record>

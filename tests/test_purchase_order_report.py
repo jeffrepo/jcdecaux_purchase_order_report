@@ -1,8 +1,22 @@
+import base64
+import io
+
 from odoo import Command, fields
+from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
+from odoo.tools.pdf import PdfFileReader, PdfFileWriter
 
 
 class TestPurchaseOrderReport(TransactionCase):
+    @staticmethod
+    def _make_pdf(page_count=1):
+        writer = PdfFileWriter()
+        for _page in range(page_count):
+            writer.addBlankPage(width=612, height=792)
+        stream = io.BytesIO()
+        writer.write(stream)
+        return stream.getvalue()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -118,6 +132,67 @@ class TestPurchaseOrderReport(TransactionCase):
             ),
             "Condiciones actualizadas.\nCon texto multilínea.",
         )
+
+    def test_purchase_appendix_is_available_in_company_settings(self):
+        appendix_pdf = self._make_pdf(page_count=2)
+        self.env.company.write(
+            {
+                "jcdecaux_purchase_appendix_pdf": base64.b64encode(
+                    appendix_pdf
+                ),
+                "jcdecaux_purchase_appendix_filename": "condiciones.pdf",
+            }
+        )
+
+        settings = self.env["res.config.settings"].create(
+            {"company_id": self.env.company.id}
+        )
+
+        self.assertEqual(
+            base64.b64decode(settings.jcdecaux_purchase_appendix_pdf),
+            appendix_pdf,
+        )
+        self.assertEqual(
+            settings.jcdecaux_purchase_appendix_filename,
+            "condiciones.pdf",
+        )
+
+    def test_purchase_appendix_rejects_invalid_pdf(self):
+        with self.assertRaises(ValidationError):
+            self.env.company.jcdecaux_purchase_appendix_pdf = (
+                base64.b64encode(b"This is not a PDF")
+            )
+
+    def test_purchase_appendix_is_merged_after_report(self):
+        purchase_pdf = self._make_pdf()
+        appendix_pdf = self._make_pdf(page_count=2)
+        self.env.company.write(
+            {
+                "jcdecaux_purchase_appendix_pdf": base64.b64encode(
+                    appendix_pdf
+                ),
+                "jcdecaux_purchase_appendix_filename": "condiciones.pdf",
+            }
+        )
+        report = self.env.ref(
+            "jcdecaux_purchase_order_report.action_report_purchase_order_jcdecaux"
+        )
+        streams = {
+            self.order.id: {
+                "stream": io.BytesIO(purchase_pdf),
+                "attachment": None,
+            }
+        }
+
+        result = self.env["ir.actions.report"]._jcdecaux_append_purchase_pdf(
+            streams,
+            report,
+            self.order.ids,
+        )
+
+        merged_pdf = result[self.order.id]["stream"].getvalue()
+        reader = PdfFileReader(io.BytesIO(merged_pdf), strict=False)
+        self.assertEqual(reader.numPages, 3)
 
     def test_delivery_address_prefers_purchase_destination(self):
         if "dest_address_id" not in self.order._fields:

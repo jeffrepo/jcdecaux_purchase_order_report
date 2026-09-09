@@ -22,6 +22,14 @@ to system administrators.
 Payment terms are required on purchase orders so the report can always print
 the corresponding condition.
 
+### Additional PDF
+
+System administrators can upload an additional PDF under **Compras >
+Configuración > Ajustes > PDF adicional para la orden de compra JCDecaux**.
+The file is configured independently per company. Its pages are appended after
+the purchase order whenever the JCDecaux report is printed or attached to an
+email. If no file is configured, the report is generated without an appendix.
+
 ## Amount mapping
 
 The report uses Odoo's computed purchase values and does not hard-code a tax
