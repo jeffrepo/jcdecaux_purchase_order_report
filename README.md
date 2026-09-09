@@ -29,6 +29,8 @@ Configuración > Ajustes > PDF adicional para la orden de compra JCDecaux**.
 The file is configured independently per company. Its pages are appended after
 the purchase order whenever the JCDecaux report is printed or attached to an
 email. If no file is configured, the report is generated without an appendix.
+The custom purchase order uses A4 paper so its page dimensions match the
+standard additional document.
 
 ## Amount mapping
 

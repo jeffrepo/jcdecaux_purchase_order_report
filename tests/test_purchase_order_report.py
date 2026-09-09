@@ -85,6 +85,14 @@ class TestPurchaseOrderReport(TransactionCase):
         self.assertAlmostEqual(self.order.amount_tax, 37.5, places=2)
         self.assertAlmostEqual(self.order.amount_total, 287.5, places=2)
 
+    def test_report_uses_a4_paperformat(self):
+        report = self.env.ref(
+            "jcdecaux_purchase_order_report."
+            "action_report_purchase_order_jcdecaux"
+        )
+
+        self.assertEqual(report.paperformat_id.format, "A4")
+
     def test_report_helpers(self):
         self.assertEqual(self.order._jcdecaux_supplier_code(), "SAP-5000034800")
         self.assertEqual(

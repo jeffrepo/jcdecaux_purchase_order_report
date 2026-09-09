@@ -3,7 +3,7 @@
     <record id="paperformat_purchase_order_jcdecaux" model="report.paperformat">
         <field name="name">Orden de compra JCDecaux</field>
         <field name="default" eval="False"/>
-        <field name="format">Letter</field>
+        <field name="format">A4</field>
         <field name="orientation">Portrait</field>
         <field name="margin_top">8</field>
         <field name="margin_bottom">8</field>
