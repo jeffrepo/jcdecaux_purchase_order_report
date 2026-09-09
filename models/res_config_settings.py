@@ -6,6 +6,15 @@ from ..constants import DEFAULT_GENERAL_TERMS, GENERAL_TERMS_PARAM
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
+    jcdecaux_purchase_appendix_pdf = fields.Binary(
+        related="company_id.jcdecaux_purchase_appendix_pdf",
+        readonly=False,
+    )
+    jcdecaux_purchase_appendix_filename = fields.Char(
+        related="company_id.jcdecaux_purchase_appendix_filename",
+        readonly=False,
+    )
+
     jcdecaux_purchase_general_terms = fields.Text(
         string="Condiciones generales de la orden de compra JCDecaux",
         default=DEFAULT_GENERAL_TERMS,
